@@ -15,8 +15,14 @@ var (
 	content = "application/json; charset=utf-8"
 )
 
+func emptyVars() bool {
+	return access == "" || secret == "" || bucket == "" || region == ""
+}
+
 func TestS3(t *testing.T) {
-	t.Skip("Need a way for CI to test this.")
+	if  emptyVars() {
+		t.Skip("need AWS credentials in order to test")
+	}
 
 	k, v := "greetings.json", "Hello World"
 
