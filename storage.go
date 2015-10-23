@@ -2,6 +2,7 @@
 package storage
 
 import (
+	"github.com/kyani-inc/storage/internal/bolt"
 	"github.com/kyani-inc/storage/internal/folder"
 	"github.com/kyani-inc/storage/internal/local"
 	"github.com/kyani-inc/storage/internal/memcache"
@@ -19,6 +20,11 @@ type Storage interface {
 
 	// Flush clears all keys from the storage.
 	Flush()
+}
+
+// Bolt utilizes a boltdb database for storage.
+func Bolt(path string) Storage {
+	return bolt.New(path)
 }
 
 // Local uses the applications memory for storage.
