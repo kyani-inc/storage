@@ -5,6 +5,7 @@ import (
 	"strings"
 	"sync"
 	"os"
+	"path/filepath"
 )
 
 var lock sync.Mutex
@@ -31,7 +32,9 @@ func (f Folder) Get(fileName string) []byte {
 }
 
 func (f Folder) Flush() {
-	os.RemoveAll(f.Path)
+	filepath.Walk(f.Path, func(path string, info os.FileInfo, err error) error {
+		return os.Remove(info.Name())
+	})
 }
 
 func location(path, fileName string) string {

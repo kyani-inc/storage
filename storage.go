@@ -33,7 +33,6 @@ func Local() Storage {
 }
 
 // Folder uses the application's underlying file structure for storage.
-// Note: Flush() will delete path.
 func Folder(path string) (Storage, error) {
 	return folder.New(path)
 }

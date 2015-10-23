@@ -34,6 +34,8 @@ func TestFolder(t *testing.T) {
 	if a != string(b) {
 		t.Fatalf("expected '%s' but got '%s'", a, b)
 	}
+
+	f.Flush()
 }
 
 func TestLocalRace(t *testing.T) {
