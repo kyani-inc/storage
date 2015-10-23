@@ -13,8 +13,10 @@ type Folder struct {
 	Path string
 }
 
-func New(path string) Folder {
-	return Folder{Path: path}
+func New(path string) (Folder, error) {
+	_, err := os.Stat(path)
+
+	return Folder{Path: path}, err
 }
 
 func (f Folder) Put(fileName string, data []byte) error {

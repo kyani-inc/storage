@@ -28,14 +28,14 @@ func Bolt(path string) (Storage, error) {
 }
 
 // Local uses the applications memory for storage.
-func Local() (Storage, error) {
-	return local.New(), nil
+func Local() Storage {
+	return local.New()
 }
 
 // Folder uses the application's underlying file structure for storage.
 // Note: Flush() will delete path.
 func Folder(path string) (Storage, error) {
-	return folder.New(path), nil
+	return folder.New(path)
 }
 
 // S3 uses Amazon AWS S3 for storage.
@@ -56,6 +56,6 @@ func Memcache(hosts []string) (Storage, error) {
 }
 
 // Basic is deprecated and is here for backwards compatibility. Use Local().
-func Basic() (Storage, error) {
+func Basic() Storage {
 	return Local()
 }
