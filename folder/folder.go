@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"strings"
 	"sync"
+	"os"
 )
 
 var lock sync.Mutex
@@ -28,7 +29,7 @@ func (f Folder) Get(fileName string) []byte {
 }
 
 func (f Folder) Flush() {
-	// ToDo: delete all files in path
+	os.RemoveAll(f.Path)
 }
 
 func location(path, fileName string) string {

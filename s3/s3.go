@@ -12,43 +12,44 @@ type S3 struct {
 	secret string
 	bucket string
 	region string
+	content string
 }
 
-func New(secret, access, bucket, region string) S3 {
-	return S3{secret: secret, access: access, bucket: bucket, region: region}
+func New(secret, access, bucket, region, content string) S3 {
+	return S3{secret: secret, access: access, bucket: bucket, region: region, content: content}
 }
 
-func (a S3) auth() aws.Auth {
+func (store S3) auth() aws.Auth {
 	return aws.Auth{
-		AccessKey: a.access,
-		SecretKey: a.secret,
+		AccessKey: store.access,
+		SecretKey: store.secret,
 	}
 }
 
-func (a S3) remoteBucket() (*s3.Bucket, error) {
+func (store S3) remoteBucket() (*s3.Bucket, error) {
 	if amazonConnection == nil {
-		amazonConnection = s3.New(a.auth(), aws.Regions[a.region])
+		amazonConnection = s3.New(store.auth(), aws.Regions[store.region])
 	}
 
-	return amazonConnection.Bucket(a.bucket)
+	return amazonConnection.Bucket(store.bucket)
 }
 
-func (a S3) Put(uri string, data []byte) error {
-	bucket, err := a.remoteBucket()
+func (store S3) Put(uri string, data []byte) error {
+	bucket, err := store.remoteBucket()
 
 	if err != nil {
 		return err
 	}
 
-	err = bucket.Put(uri, data, "application/json; charset=utf-8", s3.PublicRead)
+	err = bucket.Put(uri, data, store.content, s3.PublicRead)
 
 	return err
 }
 
-func (a S3) Get(uri string) []byte {
+func (store S3) Get(uri string) []byte {
 	b := []byte{}
 
-	bucket, err := a.remoteBucket()
+	bucket, err := store.remoteBucket()
 
 	if err != nil {
 		return []byte{}
@@ -63,6 +64,6 @@ func (a S3) Get(uri string) []byte {
 	return b
 }
 
-func (a S3) Flush() {
-	// ToDo: delete all files in folder?
+func (store S3) Flush() {
+	// Todo: Should only flush file created by this package. Maybe use a special index file?
 }
