@@ -63,7 +63,7 @@ func main() {
 
 	data := store.Get("mydata")
 
-	fmt.Println("Got data", data)
+	fmt.Println("Got data", string(data))
 }
 ```
 
