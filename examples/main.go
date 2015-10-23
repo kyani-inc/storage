@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"io/ioutil"
 
 	"github.com/kyani-inc/storage"
 )
@@ -25,8 +24,7 @@ func init() {
 		store, err = storage.S3(secret, access, bucket, region, content)
 
 	case "folder":
-		path, _ := ioutil.TempDir("", "storage")
-		store, err = storage.Folder(path)
+		store, err = storage.Folder(os.Getenv("FolderStoragePath"))
 
 	case "redis":
 		store, err = storage.Redis(os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT"))
@@ -36,7 +34,7 @@ func init() {
 		store, err = storage.Memcache(hosts)
 
 	case "bolt":
-		store, err = storage.Bolt("/tmp/storage.db")
+		store, err = storage.Bolt(os.Getenv("BoltFilePath"))
 
 	default:
 		store = storage.Local()
