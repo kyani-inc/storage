@@ -1,3 +1,4 @@
+// Package storage creates an interface for several storage technologies.
 package storage
 
 import (
@@ -10,17 +11,17 @@ import (
 
 // Storage represents a storage facility agnostic of the backing technology.
 type Storage interface {
-	// Get returns data based on a string key.
+	// Get returns data by key. Missing keys return empty []byte.
 	Get(key string) []byte
 
-	// Put can overwrite and add data to a key.
+	// Put will overwrite data by key.
 	Put(key string, data []byte) error
 
 	// Flush clears all keys from the storage.
 	Flush()
 }
 
-// Basic uses the applications memory for storage.
+// Local uses the applications memory for storage.
 func Local() Storage {
 	return local.New()
 }
@@ -46,4 +47,9 @@ func Redis(host, port string) Storage {
 // Memcache uses one or more Memcache hosts for storage.
 func Memcache(hosts []string) Storage {
 	return memcache.New(hosts)
+}
+
+// Basic is deprecated and is here for backwards compatibility. Use Local().
+func Basic() Storage {
+	return Local()
 }
