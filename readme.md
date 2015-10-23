@@ -14,7 +14,7 @@ You can write your application to use the storage interface and then change out 
 environment and application needs. For example, running `Redis` in production and using `Local` or `Folder` for 
 local development.
 
-```golang
+```go
 package main
 
 import (
