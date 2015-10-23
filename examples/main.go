@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"io/ioutil"
 
 	"github.com/kyani-inc/storage"
-	"io/ioutil"
 )
 
 var store storage.Storage
