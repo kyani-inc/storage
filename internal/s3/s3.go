@@ -15,8 +15,12 @@ type S3 struct {
 	content string
 }
 
-func New(secret, access, bucket, region, content string) S3 {
-	return S3{secret: secret, access: access, bucket: bucket, region: region, content: content}
+func New(secret, access, bucket, region, content string) (S3, error){
+	s := S3{secret: secret, access: access, bucket: bucket, region: region, content: content}
+
+	_, err := s.remoteBucket()
+
+	return s, err
 }
 
 func (store S3) auth() aws.Auth {

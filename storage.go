@@ -42,7 +42,7 @@ func Folder(path string) (Storage, error) {
 // Every key is treated as a URI and makes a new file on first Put.
 // The field content is the content type to use with all keys. For example: "application/json; charset=utf-8".
 func S3(secret, access, bucket, region, content string) (Storage, error) {
-	return s3.New(secret, access, bucket, region, content), nil
+	return s3.New(secret, access, bucket, region, content)
 }
 
 // Redis uses a Redis instance for storage.
