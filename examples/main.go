@@ -31,6 +31,9 @@ func init() {
 		hosts := strings.Split(os.Getenv("MEMCACHE_HOSTS"), ",")
 		store = storage.Memcache(hosts)
 
+	case "bolt":
+		store = storage.Bolt("/tmp/storage.db")
+
 	default:
 		store = storage.Local()
 	}
