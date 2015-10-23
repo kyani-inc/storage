@@ -46,3 +46,10 @@ func (r Redis) Put(key string, data []byte) error {
 
 	return err
 }
+
+func (r Redis) Flush() {
+	client := r.pool.Get()
+	defer client.Close()
+
+	client.Do("FLUSHDB")
+}

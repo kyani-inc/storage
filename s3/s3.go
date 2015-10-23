@@ -62,3 +62,7 @@ func (a S3) Get(uri string) []byte {
 
 	return b
 }
+
+func (a S3) Flush() {
+	// ToDo: delete all files in folder?
+}

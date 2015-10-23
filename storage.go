@@ -3,6 +3,7 @@ package storage
 import (
 	"github.com/kyani-inc/storage/folder"
 	"github.com/kyani-inc/storage/local"
+	"github.com/kyani-inc/storage/memcache"
 	"github.com/kyani-inc/storage/redis"
 	"github.com/kyani-inc/storage/s3"
 )
@@ -10,6 +11,7 @@ import (
 type Storage interface {
 	Get(key string) []byte
 	Put(key string, data []byte) error
+	Flush()
 }
 
 func Basic() Storage {
@@ -34,4 +36,8 @@ func Redis(host, port string) Storage {
 	}
 
 	return redis.New(host, port)
+}
+
+func Memcache(hosts []string) Storage {
+	return memcache.New(hosts)
 }

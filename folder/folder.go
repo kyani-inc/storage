@@ -27,6 +27,10 @@ func (f Folder) Get(fileName string) []byte {
 	return data
 }
 
+func (f Folder) Flush() {
+	// ToDo: delete all files in path
+}
+
 func location(path, fileName string) string {
 	return strings.TrimRight(path, "/") + "/" + strings.TrimLeft(fileName, "/")
 }
