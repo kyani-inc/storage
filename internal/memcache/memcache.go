@@ -27,7 +27,7 @@ func (m Memcache) Get(key string) []byte {
 
 func (m Memcache) Put(key string, data []byte) error {
 	return m.cache.Set(memcache.Item{
-		Key: key,
+		Key:   key,
 		Value: data,
 	})
 }

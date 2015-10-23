@@ -2,11 +2,11 @@
 package storage
 
 import (
-	"github.com/kyani-inc/storage/folder"
-	"github.com/kyani-inc/storage/local"
-	"github.com/kyani-inc/storage/memcache"
-	"github.com/kyani-inc/storage/redis"
-	"github.com/kyani-inc/storage/s3"
+	"github.com/kyani-inc/storage/internal/folder"
+	"github.com/kyani-inc/storage/internal/local"
+	"github.com/kyani-inc/storage/internal/memcache"
+	"github.com/kyani-inc/storage/internal/redis"
+	"github.com/kyani-inc/storage/internal/s3"
 )
 
 // Storage represents a storage facility agnostic of the backing technology.
