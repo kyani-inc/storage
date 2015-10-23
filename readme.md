@@ -2,11 +2,11 @@
 
 Unified key/value storage interface for several backing technologies.
 
-- Folder (can be slow due to locking; useful for dev or testing)
-- Local (application memory; useful for dev or testing)
-- Memcache (production ready)
-- Redis (production ready)
-- S3 (production ready)
+- **Folder** (can be slow due to locking; useful for dev or testing)
+- **Local** (application memory; useful for dev or testing)
+- **Memcache**gac (production ready)
+- **Redis** (production ready)
+- **S3** (production ready)
 
 # Usage and Examples
 
