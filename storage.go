@@ -57,5 +57,5 @@ func Memcache(hosts []string) (Storage, error) {
 
 // Basic is deprecated and is here for backwards compatibility. Use Local().
 func Basic() (Storage, error) {
-	return Local(), nil
+	return Local()
 }
