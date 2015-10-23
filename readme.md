@@ -66,3 +66,13 @@ func main() {
 	fmt.Println("Got data", data)
 }
 ```
+
+# ToDo
+
+- [x] Folder Support
+- [x] Local Memory Support
+- [x] Memcache Support
+- [x] Redis Support
+- [x] S3 Support
+- [x] Basic Example
+- [ ] S3 support of `storage.Flush()` [see here](s3/s3.go#L68)
