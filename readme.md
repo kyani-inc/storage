@@ -2,6 +2,7 @@
 
 Unified key/value storage interface for several backing technologies.
 
+- **Bolt** ([BoltDB](https://github.com/boltdb/bolt) file backed production ready)
 - **Folder** (can be slow due to locking; useful for dev or testing)
 - **Local** (application memory; useful for dev or testing)
 - **Memcache** (production ready)
@@ -47,6 +48,9 @@ func init() {
 	case "memcache":
 		hosts := strings.Split(os.Getenv("MEMCACHE_HOSTS"), ",")
 		store = storage.Memcache(hosts)
+
+	case "bolt":
+		store = storage.Bolt("/tmp/storage.db")
 
 	default:
 		store = storage.Local()
