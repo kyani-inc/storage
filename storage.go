@@ -1,10 +1,10 @@
 package storage
 
 import (
-	"github.com/kyani-inc/data-transformer/src/services/storage/folder"
-	"github.com/kyani-inc/data-transformer/src/services/storage/local"
-	"github.com/kyani-inc/data-transformer/src/services/storage/redis"
-	"github.com/kyani-inc/data-transformer/src/services/storage/s3"
+	"github.com/kyani-inc/storage/folder"
+	"github.com/kyani-inc/storage/local"
+	"github.com/kyani-inc/storage/redis"
+	"github.com/kyani-inc/storage/s3"
 )
 
 type Storage interface {
