@@ -1,26 +1,34 @@
-package folder
+package folder_test
 
 import (
 	"sync"
 	"testing"
+
+	"github.com/kyani-inc/storage/internal/folder"
+	"io/ioutil"
 )
 
 func TestFolder(t *testing.T) {
-	a := "Hello Folder Storage"
-
-	f := New("/tmp/storage")
-
-	err := f.Put("folder_test", []byte(a))
+	p, err := ioutil.TempDir("", "storage-folder-test")
 
 	if err != nil {
-		t.Errorf("error on put: %s", err.Error())
-		return
+		t.Fatal(err.Error())
+	}
+
+	a := "Hello Folder Storage"
+
+	f := folder.New(p)
+
+	err = f.Put("folder_test", []byte(a))
+
+	if err != nil {
+		t.Fatalf("error on put: %s", err.Error())
 	}
 
 	b := f.Get("folder_test")
 
 	if a != string(b) {
-		t.Errorf("expected '%s' but got '%s'", a, b)
+		t.Fatalf("expected '%s' but got '%s'", a, b)
 	}
 }
 
