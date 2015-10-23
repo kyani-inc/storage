@@ -31,3 +31,7 @@ func (m Memcache) Put(key string, data []byte) error {
 		Value: data,
 	})
 }
+
+func (m Memcache) Flush() {
+	m.cache.FlushAll()
+}
