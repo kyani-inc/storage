@@ -1,9 +1,11 @@
 package memcache_test
+
 import (
-"testing"
-"github.com/kyani-inc/storage/internal/memcache"
-	"strings"
 	"os"
+	"strings"
+	"testing"
+
+	"github.com/kyani-inc/storage/internal/memcache"
 )
 
 func getHosts() []string {
