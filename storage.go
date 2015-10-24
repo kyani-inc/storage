@@ -45,13 +45,13 @@ func S3(secret, access, bucket, region, content string) (Storage, error) {
 }
 
 // Redis uses a Redis instance for storage.
-func Redis(host, port string) (Storage, error) {
-	return redis.New(host, port), nil
+func Redis(host, port string) Storage {
+	return redis.New(host, port)
 }
 
 // Memcache uses one or more Memcache hosts for storage.
-func Memcache(hosts []string) (Storage, error) {
-	return memcache.New(hosts), nil
+func Memcache(hosts []string) Storage {
+	return memcache.New(hosts)
 }
 
 // Basic is deprecated and is here for backwards compatibility. Use Local().

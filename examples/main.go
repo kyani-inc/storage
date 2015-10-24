@@ -27,11 +27,11 @@ func init() {
 		store, err = storage.Folder(os.Getenv("FolderStoragePath"))
 
 	case "redis":
-		store, err = storage.Redis(os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT"))
+		store = storage.Redis(os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT"))
 
 	case "memcache":
 		hosts := strings.Split(os.Getenv("MEMCACHE_HOSTS"), ",")
-		store, err = storage.Memcache(hosts)
+		store = storage.Memcache(hosts)
 
 	case "bolt":
 		store, err = storage.Bolt(os.Getenv("BoltFilePath"))
