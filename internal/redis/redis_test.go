@@ -1,8 +1,10 @@
 package redis_test
+
 import (
-"testing"
-"github.com/kyani-inc/storage/internal/redis"
 	"os"
+	"testing"
+
+	"github.com/kyani-inc/storage/internal/redis"
 )
 
 var (
