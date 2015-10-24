@@ -23,7 +23,7 @@ type Storage interface {
 }
 
 // Bolt utilizes a boltdb database for storage.
-func Bolt(path string) Storage {
+func Bolt(path string) (Storage, error) {
 	return bolt.New(path)
 }
 
@@ -33,15 +33,14 @@ func Local() Storage {
 }
 
 // Folder uses the application's underlying file structure for storage.
-// Note: Flush() will delete path.
-func Folder(path string) Storage {
+func Folder(path string) (Storage, error) {
 	return folder.New(path)
 }
 
 // S3 uses Amazon AWS S3 for storage.
 // Every key is treated as a URI and makes a new file on first Put.
 // The field content is the content type to use with all keys. For example: "application/json; charset=utf-8".
-func S3(secret, access, bucket, region, content string) Storage {
+func S3(secret, access, bucket, region, content string) (Storage, error) {
 	return s3.New(secret, access, bucket, region, content)
 }
 

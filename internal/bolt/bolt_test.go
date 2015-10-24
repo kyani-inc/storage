@@ -8,9 +8,13 @@ import (
 func TestBolt(t *testing.T) {
 	a := "Hello Bolt Storage"
 
-	f := New("/tmp/storage")
+	f, err := New("/tmp/storage")
 
-	err := f.Put("folder_test", []byte(a))
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+
+	err = f.Put("folder_test", []byte(a))
 
 	if err != nil {
 		t.Errorf("error on put: %s", err.Error())
@@ -27,7 +31,11 @@ func TestBolt(t *testing.T) {
 }
 
 func BenchmarkBoltWrite(b *testing.B) {
-	f := New("/tmp/benchwrite")
+	f, err := New("/tmp/benchwrite")
+
+	if err != nil {
+		b.Fatal(err.Error())
+	}
 
 	for n := 0; n < b.N; n++ {
 		str := fmt.Sprint("%d", n)
@@ -42,7 +50,11 @@ func BenchmarkBoltWrite(b *testing.B) {
 }
 
 func BenchmarkBoltRead(b *testing.B) {
-	f := New("/tmp/benchread")
+	f, err := New("/tmp/benchread")
+
+	if err != nil {
+		b.Fatal(err.Error())
+	}
 
 	f.Put(string(1), []byte("HELLO WORLD"))
 

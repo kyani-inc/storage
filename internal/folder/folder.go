@@ -5,6 +5,7 @@ import (
 	"strings"
 	"sync"
 	"os"
+	"path/filepath"
 )
 
 var lock sync.Mutex
@@ -13,8 +14,10 @@ type Folder struct {
 	Path string
 }
 
-func New(path string) Folder {
-	return Folder{Path: path}
+func New(path string) (Folder, error) {
+	_, err := os.Stat(path)
+
+	return Folder{Path: path}, err
 }
 
 func (f Folder) Put(fileName string, data []byte) error {
@@ -29,7 +32,9 @@ func (f Folder) Get(fileName string) []byte {
 }
 
 func (f Folder) Flush() {
-	os.RemoveAll(f.Path)
+	filepath.Walk(f.Path, func(path string, info os.FileInfo, err error) error {
+		return os.Remove(info.Name())
+	})
 }
 
 func location(path, fileName string) string {

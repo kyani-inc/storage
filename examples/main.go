@@ -11,6 +11,8 @@ import (
 var store storage.Storage
 
 func init() {
+	var err error
+
 	switch os.Getenv("StorageEngine") {
 	case "s3":
 		secret := os.Getenv("AWS_SECRET_KEY")
@@ -19,10 +21,10 @@ func init() {
 		region := os.Getenv("AWS_REGION")
 		content := "application/json; charset=utf-8"
 
-		store = storage.S3(secret, access, bucket, region, content)
+		store, err = storage.S3(secret, access, bucket, region, content)
 
 	case "folder":
-		store = storage.Folder("/tmp/storage")
+		store, err = storage.Folder(os.Getenv("FolderStoragePath"))
 
 	case "redis":
 		store = storage.Redis(os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT"))
@@ -32,10 +34,14 @@ func init() {
 		store = storage.Memcache(hosts)
 
 	case "bolt":
-		store = storage.Bolt("/tmp/storage.db")
+		store, err = storage.Bolt(os.Getenv("BoltFilePath"))
 
 	default:
 		store = storage.Local()
+	}
+
+	if err != nil {
+		panic(err.Error())
 	}
 }
 

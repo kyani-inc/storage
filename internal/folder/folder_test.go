@@ -17,7 +17,11 @@ func TestFolder(t *testing.T) {
 
 	a := "Hello Folder Storage"
 
-	f := folder.New(p)
+	f, err := folder.New(p)
+
+	if err != nil {
+		t.Fatal(err.Error())
+	}
 
 	err = f.Put("folder_test", []byte(a))
 
@@ -30,6 +34,8 @@ func TestFolder(t *testing.T) {
 	if a != string(b) {
 		t.Fatalf("expected '%s' but got '%s'", a, b)
 	}
+
+	f.Flush()
 }
 
 func TestLocalRace(t *testing.T) {
