@@ -9,10 +9,10 @@ type Bolt struct {
 	*boltdb.DB
 }
 
-func New(path string) Bolt {
+func New(path string) (Bolt, error) {
 	db, err := boltdb.Open(path, 0600, nil)
 	if err != nil {
-		return Bolt{}
+		return Bolt{}, err
 	}
 
 	db.Update(func(tx *boltdb.Tx) error {
@@ -20,7 +20,7 @@ func New(path string) Bolt {
 		return err
 	})
 
-	return Bolt{[]byte(path), db}
+	return Bolt{[]byte(path), db}, nil
 }
 
 func (b Bolt) Put(key string, data []byte) error {

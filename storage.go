@@ -24,7 +24,7 @@ type Storage interface {
 
 // Bolt utilizes a boltdb database for storage.
 func Bolt(path string) (Storage, error) {
-	return bolt.New(path), nil
+	return bolt.New(path)
 }
 
 // Local uses the applications memory for storage.
