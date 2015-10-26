@@ -18,7 +18,10 @@ type Storage interface {
 	// Put will overwrite data by key.
 	Put(key string, data []byte) error
 
-	// Flush clears all keys from the storage.
+	// Delete will attempt to remove a value by key. Idempotent.
+	Delete(key string)
+
+	// Flush clears all keys from the storage. Idempotent.
 	Flush()
 }
 

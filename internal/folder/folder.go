@@ -31,6 +31,10 @@ func (f Folder) Get(fileName string) []byte {
 	return data
 }
 
+func (f Folder) Delete(fileName string) {
+	// ToDo: implement
+}
+
 func (f Folder) Flush() {
 	filepath.Walk(f.Path, func(path string, info os.FileInfo, err error) error {
 		return os.Remove(info.Name())

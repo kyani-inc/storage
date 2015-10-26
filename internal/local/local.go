@@ -17,6 +17,10 @@ func (l Local) Put(key string, data []byte) error {
 	return nil
 }
 
+func (l Local) Delete(key string) {
+	delete(l.store, key)
+}
+
 func (l Local) Flush() {
 	l.store = map[string][]byte{}
 }

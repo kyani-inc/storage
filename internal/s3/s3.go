@@ -68,6 +68,10 @@ func (store S3) Get(uri string) []byte {
 	return b
 }
 
+func (store S3) Delete(key string) {
+	// ToDo: implement
+}
+
 func (store S3) Flush() {
-	// Todo: Should only flush file created by this package. Maybe use a special index file?
+	// ToDo: Should only flush file created by this package. Maybe use a special index file?
 }

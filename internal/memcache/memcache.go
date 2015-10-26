@@ -32,6 +32,10 @@ func (m Memcache) Put(key string, data []byte) error {
 	})
 }
 
+func (m Memcache) Delete(key string) {
+	// ToDo: implement
+}
+
 func (m Memcache) Flush() {
 	m.cache.FlushAll()
 }

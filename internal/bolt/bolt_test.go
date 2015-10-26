@@ -27,6 +27,14 @@ func TestBolt(t *testing.T) {
 		t.Errorf("expected '%s' but got '%s'", a, b)
 	}
 
+	f.Delete("folder_test")
+
+	c := f.Get("folder_test")
+
+	if len(c) > 0 {
+		t.Errorf("expected emtpy result; got %s", c)
+	}
+
 	f.Flush()
 }
 

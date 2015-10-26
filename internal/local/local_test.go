@@ -1,7 +1,9 @@
 package local_test
+
 import (
-"testing"
-"github.com/kyani-inc/storage/internal/local"
+	"testing"
+
+	"github.com/kyani-inc/storage/internal/local"
 )
 
 func TestLocal(t *testing.T) {
@@ -20,4 +22,14 @@ func TestLocal(t *testing.T) {
 	if string(v) != string(b) {
 		t.Errorf("expected %s; got %s", v, b)
 	}
+
+	l.Delete(k)
+
+	c := l.Get(k)
+
+	if len(c) > 0 {
+		t.Errorf("expected emtpy result; got %s", c)
+	}
+
+	l.Flush()
 }
