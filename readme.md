@@ -77,8 +77,9 @@ func main() {
 	data := store.Get("name") // []byte("John Doe")
 
 	fmt.Printf("Hello, %s.\n", data) // Hello, John Doe.
-}
 
+	store.Delete("name")
+}
 ```
 
 # Testing
