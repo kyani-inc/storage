@@ -41,19 +41,22 @@ func init() {
 	}
 
 	if err != nil {
+		// Handle the error appropriately.
+		// You may not want to panic in your application.
 		panic(err.Error())
 	}
 }
 
 func main() {
-	err := store.Put("mydata", []byte("Hello World"))
+	// This is designed for XML or JSON documents but any []byte can be used.
+	err := store.Put("name", []byte("John Doe"))
 
 	if err != nil {
-		fmt.Println("Error saving mydata", err.Error())
+		fmt.Println("Error saving name", err.Error())
 		return
 	}
 
-	data := store.Get("mydata")
+	data := store.Get("name") // []byte("John Doe")
 
-	fmt.Println("Got data", string(data))
+	fmt.Printf("Hello, %s.\n", data) // Hello, John Doe.
 }

@@ -1,4 +1,4 @@
-// Package storage creates an interface for several storage technologies.
+// Package storage creates an interface for several key/value storage technologies.
 package storage
 
 import (
@@ -22,7 +22,7 @@ type Storage interface {
 	Flush()
 }
 
-// Bolt utilizes a boltdb database for storage.
+// Bolt utilizes a BoltDB database (https://github.com/boltdb/bolt) for storage.
 func Bolt(path string) (Storage, error) {
 	return bolt.New(path)
 }
@@ -38,6 +38,7 @@ func Folder(path string) (Storage, error) {
 }
 
 // S3 uses Amazon AWS S3 for storage.
+//
 // Every key is treated as a URI and makes a new file on first Put.
 // The field content is the content type to use with all keys. For example: "application/json; charset=utf-8".
 func S3(secret, access, bucket, region, content string) (Storage, error) {
