@@ -6,21 +6,24 @@ import (
 	"testing"
 
 	"github.com/kyani-inc/storage/internal/memcache"
+	"github.com/subosito/gotenv"
 )
 
-func getHosts() []string {
+var hosts []string
+
+func init() {
+	// attempt to load env vars in memcache pacakge.
+	gotenv.Load(".env")
+
 	v := os.Getenv("MEMCACHE_HOSTS")
 
-	if v == "" {
-		return []string{}
+	if v != "" {
+		hosts = strings.Split(v, ",")
+		return
 	}
-
-	return strings.Split(v, ",")
 }
 
 func TestMemcache(t *testing.T) {
-	hosts := getHosts()
-
 	if len(hosts) < 1 {
 		t.Skip("need memcache hosts to test")
 	}

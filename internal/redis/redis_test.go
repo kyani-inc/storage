@@ -5,12 +5,18 @@ import (
 	"testing"
 
 	"github.com/kyani-inc/storage/internal/redis"
+	"github.com/subosito/gotenv"
 )
 
 var (
-	host = os.Getenv("REDIS_HOST")
-	port = os.Getenv("REDIS_PORT")
+	host, port string
 )
+
+func init() {
+	gotenv.Load(".env")
+
+	host, port = os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT")
+}
 
 func TestRedis(t *testing.T) {
 	if host == "" || port == "" {

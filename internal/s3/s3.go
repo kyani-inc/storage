@@ -5,17 +5,16 @@ import (
 	"gopkg.in/amz.v3/s3"
 )
 
-var amazonConnection *s3.S3
-
 type S3 struct {
 	access string
 	secret string
 	bucket string
 	region string
 	content string
+	conn *s3.S3
 }
 
-func New(secret, access, bucket, region, content string) (S3, error){
+func New(access, secret, bucket, region, content string) (S3, error){
 	s := S3{secret: secret, access: access, bucket: bucket, region: region, content: content}
 
 	_, err := s.remoteBucket()
@@ -31,11 +30,11 @@ func (store S3) auth() aws.Auth {
 }
 
 func (store S3) remoteBucket() (*s3.Bucket, error) {
-	if amazonConnection == nil {
-		amazonConnection = s3.New(store.auth(), aws.Regions[store.region])
+	if store.conn == nil {
+		store.conn = s3.New(store.auth(), aws.Regions[store.region])
 	}
 
-	return amazonConnection.Bucket(store.bucket)
+	return store.conn.Bucket(store.bucket)
 }
 
 func (store S3) Put(uri string, data []byte) error {
@@ -68,8 +67,14 @@ func (store S3) Get(uri string) []byte {
 	return b
 }
 
-func (store S3) Delete(key string) {
-	// ToDo: implement
+func (store S3) Delete(uri string) {
+	bucket, err := store.remoteBucket()
+
+	if err != nil {
+		return
+	}
+
+	bucket.Del(uri)
 }
 
 func (store S3) Flush() {

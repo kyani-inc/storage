@@ -1,7 +1,6 @@
 package folder_test
 
 import (
-	"sync"
 	"testing"
 
 	"github.com/kyani-inc/storage/internal/folder"
@@ -15,7 +14,7 @@ func TestFolder(t *testing.T) {
 		t.Fatal(err.Error())
 	}
 
-	a := "Hello Folder Storage"
+	k, v := "folder_test", "Hello Folder Storage"
 
 	f, err := folder.New(p)
 
@@ -23,34 +22,25 @@ func TestFolder(t *testing.T) {
 		t.Fatal(err.Error())
 	}
 
-	err = f.Put("folder_test", []byte(a))
+	err = f.Put(k, []byte(v))
 
 	if err != nil {
 		t.Fatalf("error on put: %s", err.Error())
 	}
 
-	b := f.Get("folder_test")
+	b := f.Get(k)
 
-	if a != string(b) {
-		t.Fatalf("expected '%s' but got '%s'", a, b)
+	if v != string(b) {
+		t.Fatalf("expected '%s' but got '%s'", v, b)
+	}
+
+	f.Delete(k)
+
+	c := f.Get(k)
+
+	if len(c) > 0 {
+		t.Errorf("expected emtpy result; got %s", c)
 	}
 
 	f.Flush()
-}
-
-func TestLocalRace(t *testing.T) {
-	var wg sync.WaitGroup
-	wg.Add(2)
-
-	go func(wg *sync.WaitGroup, t *testing.T) {
-		defer wg.Done()
-		TestFolder(t)
-	}(&wg, t)
-
-	go func(wg *sync.WaitGroup, t *testing.T) {
-		defer wg.Done()
-		TestFolder(t)
-	}(&wg, t)
-
-	wg.Wait()
 }

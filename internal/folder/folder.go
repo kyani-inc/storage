@@ -32,7 +32,7 @@ func (f Folder) Get(fileName string) []byte {
 }
 
 func (f Folder) Delete(fileName string) {
-	// ToDo: implement
+	os.Remove(location(f.Path, fileName))
 }
 
 func (f Folder) Flush() {

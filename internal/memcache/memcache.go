@@ -33,7 +33,7 @@ func (m Memcache) Put(key string, data []byte) error {
 }
 
 func (m Memcache) Delete(key string) {
-	// ToDo: implement
+	m.cache.Delete(key)
 }
 
 func (m Memcache) Flush() {

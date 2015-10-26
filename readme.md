@@ -81,6 +81,24 @@ func main() {
 
 ```
 
+# Testing
+
+run `go test -v ./...`
+
+## Env Vars for Testing
+
+To test certain drivers you will need to provide the services to test against. The tests are built using 
+[gotenv](https://github.com/subosito/gotenv) so that you can provide environment variables for the tests.
+Otherwise tests that require these variables will be skipped.
+
+For example: Testing the Redis implementation on your local machine would require the file `internal/redis/.env` with the following
+contents (replace HOST and PORT with your values).
+
+```
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+```
+
 # To Do
 
 - [x] Folder Support
