@@ -13,7 +13,7 @@ var store storage.Storage
 func init() {
 	var err error
 
-	switch os.Getenv("StorageEngine") {
+	switch os.Getenv("STORAGE_ENGINE") {
 	case "s3":
 		secret := os.Getenv("AWS_SECRET_KEY")
 		access := os.Getenv("AWS_ACCESS_KEY")
@@ -24,7 +24,7 @@ func init() {
 		store, err = storage.S3(secret, access, bucket, region, content)
 
 	case "folder":
-		store, err = storage.Folder(os.Getenv("FolderStoragePath"))
+		store, err = storage.Folder(os.Getenv("FOLDER_STORAGE_PATH"))
 
 	case "redis":
 		store = storage.Redis(os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT"))
@@ -34,7 +34,7 @@ func init() {
 		store = storage.Memcache(hosts)
 
 	case "bolt":
-		store, err = storage.Bolt(os.Getenv("BoltFilePath"))
+		store, err = storage.Bolt(os.Getenv("BOLTDB_FILE_PATH"))
 
 	default:
 		store = storage.Local()
