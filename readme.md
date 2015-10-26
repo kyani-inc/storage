@@ -78,7 +78,9 @@ func main() {
 
 	fmt.Printf("Hello, %s.\n", data) // Hello, John Doe.
 
-	store.Delete("name")
+	store.Delete("name") // remove "name"
+
+	store.Flush() // get rid of everything
 }
 ```
 
