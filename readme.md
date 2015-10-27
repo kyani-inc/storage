@@ -2,12 +2,12 @@
 
 Unified key/value storage interface for several backing technologies.
 
-- **Bolt** ([BoltDB](https://github.com/boltdb/bolt) file backed; production ready)
-- **Folder** (can be slow due to locking; useful for dev or testing)
-- **Local** (application memory; useful for dev or testing)
-- **Memcache** (production ready; Memcache distributed memory object caching)
-- **Redis** (production ready; Redis in-memory data structure store)
-- **S3** (production ready; Amazon Webservice's S3)
+- **Bolt** ([BoltDB](https://github.com/boltdb/bolt) backed store; production ready)
+- **Memcache** ([Memcached](http://memcached.org/) backed store; production ready)
+- **Redis** ([Redis](http://redis.io/) backed store; production ready)
+- **S3** ([AWS S3](https://aws.amazon.com/s3/) backed store; production ready)
+- **Folder** (local folder backed store; intended for dev)
+- **Local** (application's memory backed store; intended for dev)
 
 # Usage and Examples
 
@@ -37,10 +37,12 @@ func init() {
 		access := os.Getenv("AWS_ACCESS_KEY")
 		bucket := os.Getenv("AWS_BUCKET")
 		region := os.Getenv("AWS_REGION")
-		content := "application/json; charset=utf-8" // this will set the file extension to ".json"
-		prefix := "test/storage" // all keys will be prefixed with this value: "test/storage/name"
+		content := "application/json; charset=utf-8"
+		prefix := "test/storage"
 
 		store, err = storage.S3(access, secret, bucket, region, content, prefix)
+		// all keys will be surrounded by the prefix value and content 
+		// extension (if recognized) like: "test/storage/name.json"
 
 	case "folder":
 		store, err = storage.Folder(os.Getenv("FOLDER_STORAGE_PATH"))
@@ -103,12 +105,3 @@ REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
 ```
 
-# To Do
-
-- [x] Folder Support
-- [x] Local Memory Support
-- [x] Memcache Support
-- [x] Redis Support
-- [x] S3 Support
-- [x] Basic Example
-- [ ] S3 support of `storage.Flush()` [see here](s3/s3.go#L68)
