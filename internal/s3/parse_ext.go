@@ -30,7 +30,7 @@ func parseExt(a string) string {
 		return ".mp4"
 	case strings.Contains(a, "/pdf"):
 		return ".pdf"
-	case strings.Contains(a, "/stylesheet"):
+	case strings.Contains(a, "/css"):
 		return ".css"
 	case strings.Contains(a, "/javascript"):
 		return ".js"
