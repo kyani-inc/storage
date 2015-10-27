@@ -32,9 +32,9 @@ func init() {
 	case "redis":
 		store = storage.Redis(os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT"))
 
-	case "memcache":
+	case "memcached":
 		hosts := strings.Split(os.Getenv("MEMCACHE_HOSTS"), ",")
-		store = storage.Memcache(hosts)
+		store = storage.Memcached(hosts)
 
 	case "bolt":
 		store, err = storage.Bolt(os.Getenv("BOLTDB_FILE_PATH"))

@@ -1,4 +1,4 @@
-package memcache
+package memcached
 
 import (
 	"github.com/bradfitz/gomemcache/memcache"

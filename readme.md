@@ -3,7 +3,7 @@
 Unified key/value storage interface for several backing technologies.
 
 - **Bolt** ([BoltDB](https://github.com/boltdb/bolt) backed store; production ready)
-- **Memcache** ([Memcached](http://memcached.org/) backed store; production ready)
+- **Memcached** ([Memcached](http://memcached.org/) backed store; production ready)
 - **Redis** ([Redis](http://redis.io/) backed store; production ready)
 - **S3** ([AWS S3](https://aws.amazon.com/s3/) backed store; production ready)
 - **Folder** (local folder backed store; intended for dev)
@@ -41,7 +41,7 @@ func init() {
 		prefix := "test/storage"
 
 		store, err = storage.S3(access, secret, bucket, region, content, prefix)
-		// all keys will be surrounded by the prefix value and content 
+		// all keys will be surrounded by the prefix value and content
 		// extension (if recognized) like: "test/storage/name.json"
 
 	case "folder":
@@ -50,9 +50,9 @@ func init() {
 	case "redis":
 		store = storage.Redis(os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT"))
 
-	case "memcache":
+	case "memcached":
 		hosts := strings.Split(os.Getenv("MEMCACHE_HOSTS"), ",")
-		store = storage.Memcache(hosts)
+		store = storage.Memcached(hosts)
 
 	case "bolt":
 		store, err = storage.Bolt(os.Getenv("BOLTDB_FILE_PATH"))

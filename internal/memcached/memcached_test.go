@@ -1,11 +1,11 @@
-package memcache_test
+package memcached_test
 
 import (
 	"os"
 	"strings"
 	"testing"
 
-	"github.com/kyani-inc/storage/internal/memcache"
+	"github.com/kyani-inc/storage/internal/memcached"
 	"github.com/subosito/gotenv"
 )
 
@@ -15,7 +15,7 @@ func init() {
 	// attempt to load env vars in memcache pacakge.
 	gotenv.Load(".env")
 
-	v := os.Getenv("MEMCACHE_HOSTS")
+	v := os.Getenv("MEMCACHED_HOSTS")
 
 	if v != "" {
 		hosts = strings.Split(v, ",")
@@ -23,14 +23,14 @@ func init() {
 	}
 }
 
-func TestMemcache(t *testing.T) {
+func TestMemcached(t *testing.T) {
 	if len(hosts) < 1 {
 		t.Skip("need memcache hosts to test")
 	}
 
 	k, v := "greeting", "Hello World"
 
-	m := memcache.New(hosts)
+	m := memcached.New(hosts)
 
 	err := m.Put(k, []byte(v))
 

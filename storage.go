@@ -5,7 +5,7 @@ import (
 	"github.com/kyani-inc/storage/internal/bolt"
 	"github.com/kyani-inc/storage/internal/folder"
 	"github.com/kyani-inc/storage/internal/local"
-	"github.com/kyani-inc/storage/internal/memcache"
+	"github.com/kyani-inc/storage/internal/memcached"
 	"github.com/kyani-inc/storage/internal/redis"
 	"github.com/kyani-inc/storage/internal/s3"
 )
@@ -54,6 +54,6 @@ func Redis(host, port string) Storage {
 }
 
 // Memcache uses one or more Memcache hosts for storage.
-func Memcache(hosts []string) Storage {
-	return memcache.New(hosts)
+func Memcached(hosts []string) Storage {
+	return memcached.New(hosts)
 }
