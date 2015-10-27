@@ -5,9 +5,9 @@ Unified key/value storage interface for several backing technologies.
 - **Bolt** ([BoltDB](https://github.com/boltdb/bolt) file backed; production ready)
 - **Folder** (can be slow due to locking; useful for dev or testing)
 - **Local** (application memory; useful for dev or testing)
-- **Memcache** (production ready)
-- **Redis** (production ready)
-- **S3** (production ready)
+- **Memcache** (production ready; Memcache distributed memory object caching)
+- **Redis** (production ready; Redis in-memory data structure store)
+- **S3** (production ready; Amazon Webservice's S3)
 
 # Usage and Examples
 
@@ -37,9 +37,10 @@ func init() {
 		access := os.Getenv("AWS_ACCESS_KEY")
 		bucket := os.Getenv("AWS_BUCKET")
 		region := os.Getenv("AWS_REGION")
-		content := "application/json; charset=utf-8"
+		content := "application/json; charset=utf-8" // this will set the file extension to ".json"
+		prefix := "test/storage" // all keys will be prefixed with this value: "test/storage/name"
 
-		store, err = storage.S3(secret, access, bucket, region, content)
+		store, err = storage.S3(access, secret, bucket, region, content, prefix)
 
 	case "folder":
 		store, err = storage.Folder(os.Getenv("FOLDER_STORAGE_PATH"))
