@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/kyani-inc/storage/internal/redis"
+	"github.com/kyani-inc/storage/providers/redis"
 	"github.com/subosito/gotenv"
 )
 

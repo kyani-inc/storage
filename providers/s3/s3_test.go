@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/kyani-inc/storage/internal/s3"
+	"github.com/kyani-inc/storage/providers/s3"
 	"github.com/subosito/gotenv"
 )
 

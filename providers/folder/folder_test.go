@@ -3,7 +3,7 @@ package folder_test
 import (
 	"testing"
 
-	"github.com/kyani-inc/storage/internal/folder"
+	"github.com/kyani-inc/storage/providers/folder"
 	"io/ioutil"
 )
 

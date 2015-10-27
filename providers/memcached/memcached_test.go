@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kyani-inc/storage/internal/memcached"
+	"github.com/kyani-inc/storage/providers/memcached"
 	"github.com/subosito/gotenv"
 )
 

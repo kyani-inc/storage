@@ -3,7 +3,7 @@ package local_test
 import (
 	"testing"
 
-	"github.com/kyani-inc/storage/internal/local"
+	"github.com/kyani-inc/storage/providers/local"
 )
 
 func TestLocal(t *testing.T) {
