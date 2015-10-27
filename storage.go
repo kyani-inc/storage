@@ -42,10 +42,10 @@ func Folder(path string) (Storage, error) {
 
 // S3 uses Amazon AWS S3 for storage.
 //
-// Every key is treated as a URI and makes a new file on first Put.
+// Every key combined with the prefix (to support Flush) and a possible extension determined by content.
 // The field content is the content type to use with all keys. For example: "application/json; charset=utf-8".
-func S3(secret, access, bucket, region, content string) (Storage, error) {
-	return s3.New(secret, access, bucket, region, content)
+func S3(access, secret, bucket, region, content, prefix string) (Storage, error) {
+	return s3.New(access, secret, bucket, region, content, prefix)
 }
 
 // Redis uses a Redis instance for storage.
@@ -56,9 +56,4 @@ func Redis(host, port string) Storage {
 // Memcache uses one or more Memcache hosts for storage.
 func Memcache(hosts []string) Storage {
 	return memcache.New(hosts)
-}
-
-// Basic is deprecated and is here for backwards compatibility. Use Local().
-func Basic() Storage {
-	return Local()
 }

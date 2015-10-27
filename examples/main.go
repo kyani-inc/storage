@@ -19,9 +19,10 @@ func init() {
 		access := os.Getenv("AWS_ACCESS_KEY")
 		bucket := os.Getenv("AWS_BUCKET")
 		region := os.Getenv("AWS_REGION")
-		content := "application/json; charset=utf-8"
+		content := "application/json; charset=utf-8" // this will set the file extension to ".json"
+		prefix := "test/storage" // all keys will be prefixed with this value: "test/storage/name"
 
-		store, err = storage.S3(secret, access, bucket, region, content)
+		store, err = storage.S3(access, secret, bucket, region, content, prefix)
 
 	case "folder":
 		store, err = storage.Folder(os.Getenv("FOLDER_STORAGE_PATH"))
