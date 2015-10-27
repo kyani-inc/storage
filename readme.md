@@ -51,7 +51,7 @@ func init() {
 		store = storage.Redis(os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT"))
 
 	case "memcached":
-		hosts := strings.Split(os.Getenv("MEMCACHE_HOSTS"), ",")
+		hosts := strings.Split(os.Getenv("MEMCACHED_HOSTS"), ",")
 		store = storage.Memcached(hosts)
 
 	case "bolt":
