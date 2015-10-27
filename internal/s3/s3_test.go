@@ -10,16 +10,18 @@ import (
 
 var (
 	access, secret, bucket, region string
+
+	prefix  = "test/storage"
 	content = "application/json; charset=utf-8"
 )
 
 func init() {
 	gotenv.Load(".env")
 
-	access  = os.Getenv("AWS_ACCESS")
-	secret  = os.Getenv("AWS_SECRET")
-	bucket  = os.Getenv("AWS_BUCKET")
-	region  = os.Getenv("AWS_REGION")
+	access = os.Getenv("AWS_ACCESS")
+	secret = os.Getenv("AWS_SECRET")
+	bucket = os.Getenv("AWS_BUCKET")
+	region = os.Getenv("AWS_REGION")
 }
 
 func emptyVars() bool {
@@ -27,13 +29,13 @@ func emptyVars() bool {
 }
 
 func TestS3(t *testing.T) {
-	if  emptyVars() {
+	if emptyVars() {
 		t.Skip("need AWS credentials in order to test")
 	}
 
-	k, v := "test/greetings.json", "Hello World"
+	k, v := "greetings.json", "Hello World"
 
-	s, err := s3.New(access, secret, bucket, region, content)
+	s, err := s3.New(access, secret, bucket, region, content, prefix)
 
 	if err != nil {
 		t.Fatal(err.Error())
