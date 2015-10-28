@@ -11,7 +11,7 @@ Unified key/value storage interface for several backing technologies.
 
 # Usage and Examples
 
-`go get https://godoc.org/gopkg.in/kyani-inc/storage.v1`
+`go get -u gopkg.in/kyani-inc/storage.v1`
 
 You can write your application to use the storage interface and then change out the backing technology based on 
 environment and application needs. For example, running `Redis` in production and using `Local` or `Folder` for 
