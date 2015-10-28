@@ -48,7 +48,10 @@ func (r Redis) Put(key string, data []byte) error {
 }
 
 func (r Redis) Delete(key string) {
-	// ToDo: implement
+	client := r.pool.Get()
+	defer client.Close()
+
+	client.Do("DEL", key)
 }
 
 func (r Redis) Flush() {
