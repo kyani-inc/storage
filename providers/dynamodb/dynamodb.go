@@ -117,6 +117,11 @@ func (ddb DynamoDB) createTable() (err error) {
 
 // Put overwrites or creates as needed a new file based on the key.
 func (ddb DynamoDB) Put(key string, data []byte) error {
+
+	if len(data) == 0 {
+		return errors.New("Can't put empty values")
+	}
+
 	params := &dynamodb.PutItemInput{
 		TableName: aws.String(ddb.Table),
 		Item: map[string]*dynamodb.AttributeValue{
