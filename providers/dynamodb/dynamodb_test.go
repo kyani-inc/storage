@@ -23,14 +23,17 @@ func TestMain(m *testing.M) {
 	region = os.Getenv("AWS_REGION") //"us-west-2"
 	dbtable = os.Getenv("DYNAMO_DB_TABLE")
 	endpoint = os.Getenv("DYNAMO_DB_ENDPOINT")
+
+	if region == "" || dbtable == "" || endpoint == "" {
+		fmt.Println("Env vars not set")
+		os.Exit(0)
+		return
+	}
+
 	os.Exit(m.Run())
 }
 
 func TestConnect(t *testing.T) {
-	if region == "" || dbtable == "" || endpoint == "" {
-		t.Fatal("Missing required env vars!")
-	}
-
 	var err error
 	ddb, err = dynamodb.New(region, endpoint, "test_table")
 
