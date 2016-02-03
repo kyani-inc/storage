@@ -2,7 +2,6 @@ package dynamodb_test
 
 import (
 	"os"
-	"strings"
 	"testing"
 
 	"github.com/kyani-inc/storage/providers/dynamodb"
@@ -31,7 +30,7 @@ func checkEnv(t *testing.T) {
 	}
 }
 
-func TestConnect(t *testing.T) {
+func TestDDB(t *testing.T) {
 	checkEnv(t)
 
 	var err error
@@ -42,75 +41,53 @@ func TestConnect(t *testing.T) {
 	} else {
 		t.Log("Connected to local DynamoDB server")
 	}
-}
 
-func TestPut(t *testing.T) {
-	checkEnv(t)
-
-	blah := []byte("hello, world!!")
-	err := ddb.Put("test1", blah)
+	k, v := "test1", "hello, world!!"
+	err = ddb.Put(k, []byte(v))
 
 	if err != nil {
-		t.Error(err.Error())
+		t.Error("Error putting value", err.Error())
 	}
 
-	blah = []byte(`{"hello":"world"}`)
-	err = ddb.Put("test2", blah)
+	b := ddb.Get(k)
 
-	if err != nil {
-		t.Error(err.Error())
+	if v != string(b) {
+		t.Error("item `test1` does not contain expected values")
 	}
 
-	blah = []byte("")
-	err = ddb.Put("nodata", blah)
+	ddb.Delete(k)
+
+	b = ddb.Get(k)
+
+	if v == string(b) {
+		t.Error("key test2 was not deleted!")
+	}
+
+	k, v = "nodata", ""
+	err = ddb.Put(k, []byte(v))
 
 	if err == nil {
 		t.Error("An error was expected but passed for some reason..")
 	}
-}
 
-func TestGet(t *testing.T) {
-	checkEnv(t)
+	b = ddb.Get("nodata")
 
-	data := ddb.Get("test1")
-
-	if strings.Contains(string(data), "hello, world") == false {
-		t.Error("item `test1` does not contain expected values")
-	}
-
-	data = ddb.Get("test2")
-
-	if strings.Contains(string(data), `{"hello":"world"}`) == false {
-		t.Error("item `test2` does not contain expected values")
-	}
-
-	data = ddb.Get("nodata")
-
-	if strings.Contains(string(data), "") == false {
+	if v != string(b) {
 		t.Error("item `nodata` should not contain data")
 	}
-}
 
-func TestDelete(t *testing.T) {
-	checkEnv(t)
+	k, v = "test2", "data..."
+	err = ddb.Put(k, []byte(v))
 
-	ddb.Delete("test2")
-
-	data := ddb.Get("test2")
-
-	if strings.Contains(string(data), "world") == true {
-		t.Error("key test2 was not deleted!")
+	if err != nil {
+		t.Error("Error putting value", err.Error())
 	}
-}
-
-func TestFlush(t *testing.T) {
-	checkEnv(t)
 
 	ddb.Flush()
 
-	exists := ddb.TableExists()
+	b = ddb.Get(k)
 
-	if exists {
-		t.Error("DB Table was not 'flushed'. Failed to remove table.")
+	if v == string(b) {
+		t.Error("Failed to flush the table..")
 	}
 }

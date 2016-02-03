@@ -39,7 +39,7 @@ func New(region string, endPoint string, tableName string) (DynamoDB, error) {
 
 // tableExists checks to see if it can query the table meta data.
 // if not, the table *probably* doesn't exists.
-func (ddb DynamoDB) TableExists() bool {
+func (ddb DynamoDB) tableExists() bool {
 	params := &dynamodb.DescribeTableInput{
 		TableName: aws.String(ddb.Table), // Required
 	}
@@ -65,7 +65,7 @@ func (ddb DynamoDB) TableExists() bool {
 
 // createTable yes, this is all required.
 func (ddb DynamoDB) createTable() (err error) {
-	exists := ddb.TableExists()
+	exists := ddb.tableExists()
 
 	if exists == true {
 		return nil
