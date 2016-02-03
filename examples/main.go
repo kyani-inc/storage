@@ -39,9 +39,6 @@ func init() {
 	case "bolt":
 		store, err = storage.Bolt(os.Getenv("BOLTDB_FILE_PATH"))
 
-	case "dynamodb":
-		store, err = storage.DynamoDB(os.Getenv("AWS_REGION"), os.Getenv("DYNAMO_DB_ENDPOINT"), os.Getenv("DYNAMO_DB_TABLE"))
-
 	default:
 		store = storage.Local()
 	}
