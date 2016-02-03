@@ -24,18 +24,20 @@ func TestMain(m *testing.M) {
 	dbtable = os.Getenv("DYNAMO_DB_TABLE")
 	endpoint = os.Getenv("DYNAMO_DB_ENDPOINT")
 
-	if region == "" || dbtable == "" || endpoint == "" {
-		fmt.Println("Env vars not set")
-		os.Exit(0)
-		return
-	}
-
 	os.Exit(m.Run())
 }
 
+func checkEnv(t *testing.T) {
+	if region == "" || dbtable == "" || endpoint == "" {
+		t.Skip("env vars not defined")
+	}
+}
+
 func TestConnect(t *testing.T) {
+	checkEnv(t)
+
 	var err error
-	ddb, err = dynamodb.New(region, endpoint, "test_table")
+	ddb, err = dynamodb.New(region, endpoint, dbtable)
 
 	if err != nil {
 		t.Fatal("Failed to establish connection with DynamoDB!")
@@ -45,6 +47,8 @@ func TestConnect(t *testing.T) {
 }
 
 func TestPut(t *testing.T) {
+	checkEnv(t)
+
 	blah := []byte("hello, world!!")
 	_ = ddb.Put("test1", blah)
 
@@ -56,6 +60,8 @@ func TestPut(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
+	checkEnv(t)
+
 	data := ddb.Get("test1")
 	fmt.Println(string(data))
 
@@ -67,6 +73,8 @@ func TestGet(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
+	checkEnv(t)
+
 	ddb.Delete("test2")
 
 	data := ddb.Get("test2")
@@ -77,6 +85,8 @@ func TestDelete(t *testing.T) {
 }
 
 func TestFlush(t *testing.T) {
+	checkEnv(t)
+
 	ddb.Flush()
 
 	exists := ddb.TableExists()
