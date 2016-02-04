@@ -90,7 +90,7 @@ func (ddb DynamoDB) Delete(key string) {
 			},
 		},
 	}
-	_, _ = ddb.Conn.DeleteItem(params)
+	ddb.Conn.DeleteItem(params)
 }
 
 // Flush removes the entire db table. This should be called with caution!
