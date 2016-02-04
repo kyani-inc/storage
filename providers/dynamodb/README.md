@@ -5,9 +5,11 @@ This is a simple abstraction layer between Amazon's DynamoDB and our local stora
 To run the tests, create a .env file in the dynamodb directory with the following vars:
 
 ```
-AWS_REGION=us-west-2
-DYNAMO_DB_TABLE=test_table
-DYNAMO_DB_ENDPOINT=dynamodb.serveraddress.aws.com
+AWS_ACCESS=my-access-id
+AWS_SECRET=my-access-secret
+AWS_REGION=us-east-1
+DYNAMO_DB_TABLE=my_test_table
+DYNAMO_DB_ENDPOINT=https://dynamodb.us-east-1.amazonaws.com
 ```
 
 ### Running Local

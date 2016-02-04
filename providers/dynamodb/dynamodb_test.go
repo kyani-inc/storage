@@ -11,6 +11,8 @@ import (
 var (
 	ddb       dynamodb.DynamoDB
 	envLoaded = false
+	access    = ""
+	secret    = ""
 	region    = ""
 	dbtable   = ""
 	endpoint  = ""
@@ -19,13 +21,16 @@ var (
 func checkEnv(t *testing.T) {
 	if envLoaded == false {
 		gotenv.Load(".env")
-		region = os.Getenv("AWS_REGION") //"us-west-2"
+
+		access = os.Getenv("AWS_ACCESS")
+		secret = os.Getenv("AWS_SECRET")
+		region = os.Getenv("AWS_REGION")
 		dbtable = os.Getenv("DYNAMO_DB_TABLE")
 		endpoint = os.Getenv("DYNAMO_DB_ENDPOINT")
 		envLoaded = true
 	}
 
-	if region == "" || dbtable == "" || endpoint == "" {
+	if access == "" || secret == "" || region == "" || dbtable == "" {
 		t.Skip("env vars not defined")
 	}
 }
@@ -34,12 +39,12 @@ func TestDDB(t *testing.T) {
 	checkEnv(t)
 
 	var err error
-	ddb, err = dynamodb.New(region, endpoint, dbtable)
+	ddb, err = dynamodb.New(access, secret, region, endpoint, dbtable)
 
 	if err != nil {
 		t.Fatal("Failed to establish connection with DynamoDB!")
 	} else {
-		t.Log("Connected to local DynamoDB server")
+		t.Log("Connected to DynamoDB server")
 	}
 
 	k, v := "test1", "hello, world!!"

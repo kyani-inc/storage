@@ -4,9 +4,9 @@ package dynamodb
 import (
 	"errors"
 	"fmt"
-	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 )
@@ -17,102 +17,22 @@ type DynamoDB struct {
 }
 
 // New creates an instance of the DynamoDB struct for us.
-func New(region string, endPoint string, tableName string) (DynamoDB, error) {
+func New(access string, secret string, region string, endPoint string, tableName string) (DynamoDB, error) {
+	creds := credentials.NewStaticCredentials(access, secret, "")
+
 	cfg := aws.Config{
 		Region:   aws.String(region),
 		Endpoint: aws.String(endPoint),
 	}
+
+	cfg.WithCredentials(creds)
 
 	ddb := DynamoDB{
 		Table: tableName,
 		Conn:  dynamodb.New(session.New(), &cfg),
 	}
 
-	err := ddb.createTable()
-
-	if err != nil {
-		return ddb, errors.New("DB Error")
-	}
-
 	return ddb, nil
-}
-
-// tableExists checks to see if it can query the table meta data.
-// if not, the table *probably* doesn't exists.
-func (ddb DynamoDB) tableExists() bool {
-	params := &dynamodb.DescribeTableInput{
-		TableName: aws.String(ddb.Table), // Required
-	}
-
-	resp, err := ddb.Conn.DescribeTable(params)
-
-	if err != nil {
-		// We'll assume just this is a "ResourceNotFoundException".
-		return false
-	}
-
-	if resp != nil && resp.Table != nil {
-		status := resp.Table.TableStatus
-
-		// yeah...you have to dereference a string -_-
-		if *status == "ACTIVE" {
-			return true
-		}
-	}
-
-	return false
-}
-
-// createTable yes, this is all required.
-func (ddb DynamoDB) createTable() (err error) {
-	exists := ddb.tableExists()
-
-	if exists == true {
-		return nil
-	}
-
-	table := &dynamodb.CreateTableInput{
-		TableName: aws.String(ddb.Table),
-		AttributeDefinitions: []*dynamodb.AttributeDefinition{
-			{
-				AttributeName: aws.String("key"),
-				AttributeType: aws.String("S"),
-			},
-		},
-		KeySchema: []*dynamodb.KeySchemaElement{
-			{
-				AttributeName: aws.String("key"),
-				KeyType:       aws.String("HASH"),
-			},
-		},
-		ProvisionedThroughput: &dynamodb.ProvisionedThroughput{
-			ReadCapacityUnits:  aws.Int64(2),
-			WriteCapacityUnits: aws.Int64(2),
-		},
-	}
-
-	resp, err := ddb.Conn.CreateTable(table)
-
-	if err != nil {
-		// Failed to create table
-		return err
-	}
-
-	if resp != nil && resp.TableDescription != nil {
-		status := resp.TableDescription.TableStatus
-
-		if *status == "ACTIVE" {
-			// The table is ready for use..
-		}
-
-		if *status == "CREATING" {
-			// Block for a bit to ensure the table exists before we attempt to start using it...
-			// we may want to make sure we create the table in the AWS UI before using it.
-			time.Sleep(15 * time.Second)
-		}
-	}
-
-	return nil
 }
 
 // Put overwrites or creates as needed a new file based on the key.
