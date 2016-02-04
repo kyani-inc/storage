@@ -60,6 +60,6 @@ func Memcached(hosts []string) Storage {
 }
 
 // AWS DynamoDB storage.
-func DynamoDB(access string, secret string, region string, endpoint string, table string) (Storage, error) {
-	return dynamodb.New(access, secret, region, endpoint, table)
+func DynamoDB(access string, secret string, region string, table string) (Storage, error) {
+	return dynamodb.New(access, secret, region, table)
 }

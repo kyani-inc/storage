@@ -9,7 +9,6 @@ AWS_ACCESS=my-access-id
 AWS_SECRET=my-access-secret
 AWS_REGION=us-east-1
 DYNAMO_DB_TABLE=my_test_table
-DYNAMO_DB_ENDPOINT=https://dynamodb.us-east-1.amazonaws.com
 ```
 
 ### Running Local

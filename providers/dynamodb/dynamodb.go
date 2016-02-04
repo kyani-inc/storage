@@ -17,12 +17,11 @@ type DynamoDB struct {
 }
 
 // New creates an instance of the DynamoDB struct for us.
-func New(access string, secret string, region string, endPoint string, tableName string) (DynamoDB, error) {
+func New(access string, secret string, region string, tableName string) (DynamoDB, error) {
 	creds := credentials.NewStaticCredentials(access, secret, "")
 
 	cfg := aws.Config{
-		Region:   aws.String(region),
-		Endpoint: aws.String(endPoint),
+		Region: aws.String(region),
 	}
 
 	cfg.WithCredentials(creds)
