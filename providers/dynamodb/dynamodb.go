@@ -70,13 +70,13 @@ func (ddb DynamoDB) Get(key string) []byte {
 	results, err := ddb.Conn.GetItem(params)
 
 	if err != nil {
-		return []byte{}
+		return nil
 	}
 
 	if val, ok := results.Item["value"]; ok {
 		return val.B
 	}
-	return []byte{}
+	return nil
 }
 
 // Delete removes a file by key.

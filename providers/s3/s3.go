@@ -65,18 +65,18 @@ func (store S3) Put(key string, data []byte) error {
 
 // Get attempts to access the contents of a file by key.
 func (store S3) Get(key string) []byte {
-	b := []byte{}
+	var b []byte
 
 	bucket, err := store.remoteBucket()
 
 	if err != nil {
-		return []byte{}
+		return b
 	}
 
 	b, err = bucket.Get(store.uri(key))
 
 	if err != nil {
-		return []byte{}
+		return nil
 	}
 
 	return b
@@ -154,4 +154,3 @@ func (store S3) validate() error {
 
 	return errors.New(fmt.Sprintf("S3 errors %+v", errs))
 }
-
