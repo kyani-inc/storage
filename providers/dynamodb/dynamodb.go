@@ -98,9 +98,6 @@ func (ddb DynamoDB) Flush() {
 		TableName: aws.String(ddb.Table), // Required
 	}
 
-	_, err := ddb.Conn.DeleteTable(params)
+	ddb.Conn.DeleteTable(params)
 
-	if err != nil {
-		fmt.Println("Failed to flush table", err.Error())
-	}
 }
