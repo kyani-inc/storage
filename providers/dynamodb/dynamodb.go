@@ -3,7 +3,6 @@ package dynamodb
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -99,5 +98,4 @@ func (ddb DynamoDB) Flush() {
 	}
 
 	ddb.Conn.DeleteTable(params)
-
 }
