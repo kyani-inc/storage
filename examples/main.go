@@ -39,6 +39,14 @@ func init() {
 	case "bolt":
 		store, err = storage.Bolt(os.Getenv("BOLTDB_FILE_PATH"))
 
+	case "dynamodb":
+		secret := os.Getenv("AWS_SECRET_KEY")
+		access := os.Getenv("AWS_ACCESS_KEY")
+		region := os.Getenv("AWS_REGION")
+		table := os.Getenv("DYNAMODB_TABLE")
+
+		store, err = storage.DynamoDB(access, secret, region, table)
+
 	default:
 		store = storage.Local()
 	}
@@ -60,6 +68,11 @@ func main() {
 	}
 
 	data := store.Get("name") // []byte("John Doe")
+
+	if data == nil {
+		fmt.Println("Missing key: name")
+		return
+	}
 
 	fmt.Printf("Hello, %s.\n", data) // Hello, John Doe.
 
