@@ -3,7 +3,6 @@ package dynamodb
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -98,9 +97,5 @@ func (ddb DynamoDB) Flush() {
 		TableName: aws.String(ddb.Table), // Required
 	}
 
-	_, err := ddb.Conn.DeleteTable(params)
-
-	if err != nil {
-		fmt.Println("Failed to flush table", err.Error())
-	}
+	ddb.Conn.DeleteTable(params)
 }
