@@ -6,6 +6,7 @@ Unified key/value storage interface for several backing technologies.
 - **Memcached** ([Memcached](http://memcached.org/) backed store; production ready)
 - **Redis** ([Redis](http://redis.io/) backed store; production ready)
 - **S3** ([AWS S3](https://aws.amazon.com/s3/) backed store; production ready)
+- **DynamoDB** (AWS DynamoDB)[https://aws.amazon.com/dynamodb/] backed store; production ready)
 - **Folder** (local folder backed store; intended for dev)
 - **Local** (application's memory backed store; intended for dev)
 
@@ -59,6 +60,14 @@ func init() {
 	case "bolt":
 		store, err = storage.Bolt(os.Getenv("BOLTDB_FILE_PATH"))
 
+	case "dynamodb":
+		secret := os.Getenv("AWS_SECRET_KEY")
+		access := os.Getenv("AWS_ACCESS_KEY")
+		region := os.Getenv("AWS_REGION")
+		table := os.Getenv("DYNAMODB_TABLE")
+
+		store, err = storage.DynamoDB(access, secret, region, table)
+
 	default:
 		store = storage.Local()
 	}
@@ -81,6 +90,11 @@ func main() {
 
 	data := store.Get("name") // []byte("John Doe")
 
+	if data == nil {
+		fmt.Println("Missing key: name");
+		return
+	}
+
 	fmt.Printf("Hello, %s.\n", data) // Hello, John Doe.
 
 	store.Delete("name") // remove "name"
@@ -99,7 +113,7 @@ To test certain drivers you will need to provide the services to test against. T
 [gotenv](https://github.com/subosito/gotenv) so that you can provide environment variables for the tests.
 Otherwise tests that require these variables will be skipped.
 
-For example: Testing the Redis implementation on your local machine would require the file `internal/redis/.env` with the following
+For example: Testing the Redis implementation on your local machine would require the file `providers/redis/.env` with the following
 contents (replace HOST and PORT with your values).
 
 ```

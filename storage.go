@@ -13,7 +13,7 @@ import (
 
 // Storage represents a storage facility agnostic of the backing technology.
 type Storage interface {
-	// Get returns data by key. Missing keys return empty []byte.
+	// Get returns data by key. Missing keys return `nil`.
 	Get(key string) []byte
 
 	// Put will overwrite data by key.
