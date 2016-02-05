@@ -6,7 +6,7 @@ Unified key/value storage interface for several backing technologies.
 - **Memcached** ([Memcached](http://memcached.org/) backed store; production ready)
 - **Redis** ([Redis](http://redis.io/) backed store; production ready)
 - **S3** ([AWS S3](https://aws.amazon.com/s3/) backed store; production ready)
-- **DynamoDB** (AWS DynamoDB)[https://aws.amazon.com/dynamodb/] backed store; production ready)
+- **DynamoDB** ([AWS DynamoDB](https://aws.amazon.com/dynamodb/) backed store; production ready)
 - **Folder** (local folder backed store; intended for dev)
 - **Local** (application's memory backed store; intended for dev)
 
