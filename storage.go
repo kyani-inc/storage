@@ -3,6 +3,7 @@ package storage
 
 import (
 	"github.com/kyani-inc/storage/providers/bolt"
+	"github.com/kyani-inc/storage/providers/dynamodb"
 	"github.com/kyani-inc/storage/providers/folder"
 	"github.com/kyani-inc/storage/providers/local"
 	"github.com/kyani-inc/storage/providers/memcached"
@@ -56,4 +57,9 @@ func Redis(host, port string) Storage {
 // Memcache uses one or more Memcache hosts for storage.
 func Memcached(hosts []string) Storage {
 	return memcached.New(hosts)
+}
+
+// AWS DynamoDB storage.
+func DynamoDB(access string, secret string, region string, table string) (Storage, error) {
+	return dynamodb.New(access, secret, region, table)
 }
