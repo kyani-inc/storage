@@ -2,8 +2,11 @@
 package storage
 
 import (
+	"net/http"
+
 	"github.com/kyani-inc/storage/providers/bolt"
 	"github.com/kyani-inc/storage/providers/dynamodb"
+	"github.com/kyani-inc/storage/providers/elasticsearch"
 	"github.com/kyani-inc/storage/providers/folder"
 	"github.com/kyani-inc/storage/providers/local"
 	"github.com/kyani-inc/storage/providers/memcached"
@@ -62,4 +65,9 @@ func Memcached(hosts []string) Storage {
 // AWS DynamoDB storage.
 func DynamoDB(access string, secret string, region string, table string) (Storage, error) {
 	return dynamodb.New(access, secret, region, table)
+}
+
+// ElasticSearch storage
+func ElasticSearch(host, scheme string, h http.Client) (Storage, error) {
+	return elasticsearch.New(host, scheme, h)
 }
