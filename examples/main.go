@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"gopkg.in/kyani-inc/storage.v1"
+	"github.com/kyani-inc/storage"
 )
 
 var store storage.Storage
