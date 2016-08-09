@@ -7,6 +7,7 @@ Unified key/value storage interface for several backing technologies.
 - **Redis** ([Redis](http://redis.io/) backed store; production ready)
 - **S3** ([AWS S3](https://aws.amazon.com/s3/) backed store; production ready)
 - **DynamoDB** ([AWS DynamoDB](https://aws.amazon.com/dynamodb/) backed store; production ready)
+- **AWS ElasticSearch**([AWS ElasticSearch] (https://aws.amazon.com/elasticsearch-service/) backed store; production ready)
 - **Folder** (local folder backed store; intended for dev)
 - **Local** (application's memory backed store; intended for dev)
 
@@ -29,7 +30,7 @@ import (
 	"gopkg.in/kyani-inc/storage.v1"
 )
 
-var store storage.Storage
+var store storage.Storage 
 
 func init() {
 	var err error
@@ -67,6 +68,16 @@ func init() {
 		table := os.Getenv("DYNAMODB_TABLE")
 
 		store, err = storage.DynamoDB(access, secret, region, table)
+        
+    case "elasticsearch":
+		host := os.Getenv("ES_HOST")
+		scheme := os.Getenv("ES_SCHEME")
+		index := os.Getenv("ES_INDEX")
+		namespace := os.Getenv("APP_NAME")
+		awsSecret := os.Getenv("AWS_SECRET_KEY")
+		awsKey := os.Getenv("AWS_ACCESS_KEY")
+
+		store, err = storage.ElasticSearch(host, scheme, index, namespace, awsKey, awsSecret)
 
 	default:
 		store = storage.Local()

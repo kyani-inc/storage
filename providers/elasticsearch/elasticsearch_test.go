@@ -1,7 +1,6 @@
 package elasticsearch_test
 
 import (
-	"net/http"
 	"os"
 	"testing"
 
@@ -12,17 +11,17 @@ import (
 )
 
 var (
-	host, index, scheme, namespace string
+	host, index, scheme, namespace, awsKey, awsSecret string
 )
 
-type person struct {
-	Name      string   `json:"name"`
-	Age       int      `json:"age"`
-	Nicknames nickname `json:"nicknames"`
+type product struct {
+	Name        string      `json:"name"`
+	Price       int         `json:"price"`
+	Description description `json:"description"`
 }
 
-type nickname struct {
-	Name string `json:"nickname"`
+type description struct {
+	Description string `json:"nickname"`
 }
 
 func init() {
@@ -31,10 +30,12 @@ func init() {
 	index = os.Getenv("ES_INDEX")
 	namespace = os.Getenv("ES_NAMESPACE")
 	scheme = os.Getenv("ES_SCHEME")
+	awsKey = os.Getenv("AWS_KEY")
+	awsSecret = os.Getenv("AWS_SECRET")
 }
 
 func emptyVars() bool {
-	return host == "" || index == "" || scheme == ""
+	return host == "" || index == "" || scheme == "" || awsKey == "" || awsSecret == ""
 
 }
 
@@ -43,33 +44,33 @@ func TestES(t *testing.T) {
 		t.Error("Must have ENV set")
 	}
 
-	es, err := elasticsearch.New(host, scheme, index, namespace, http.Client{})
+	es, err := elasticsearch.New(host, scheme, index, namespace, awsKey, awsSecret)
 
 	if err != nil {
 		t.Errorf("Building new ES client error %+v", err)
 	}
 
-	td := person{
-		Name:      "Crit",
-		Age:       100,
-		Nicknames: nickname{Name: "Waffle"},
+	td := product{
+		Name:        "Kyäni Sunrise",
+		Price:       100,
+		Description: description{Description: "Complete Nutrition & Antioxidant Powerhouse"},
 	}
 
 	data, err := json.Marshal(td)
 
-	err = es.Put("Crit", data)
+	err = es.Put("Sunrise", data)
 
 	if err != nil {
 		t.Errorf("Error on Put error:%s", err)
 	}
 
-	crit := es.Get("Crit")
+	crit := es.Get("Sunrise")
 
 	if len(crit) < 1 {
 		t.Errorf("Error on Get - data retrieved: %s", crit)
 	}
 
-	var container person
+	var container product
 
 	err = json.Unmarshal(crit, &container)
 
@@ -81,9 +82,9 @@ func TestES(t *testing.T) {
 		t.Errorf("Incorrect data returned original key: %v, recieved: %v", td, container)
 	}
 
-	es.Delete("Crit")
+	es.Delete("Sunrise")
 
-	crit = es.Get("Crit")
+	crit = es.Get("Sunrise")
 
 	if len(crit) > 0 {
 		t.Errorf("No successful deletion retrieved for:%v ", crit)

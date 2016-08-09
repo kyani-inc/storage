@@ -47,6 +47,16 @@ func init() {
 
 		store, err = storage.DynamoDB(access, secret, region, table)
 
+	case "elasticsearch":
+		host := os.Getenv("ES_HOST")
+		scheme := os.Getenv("ES_SCHEME")
+		index := os.Getenv("ES_INDEX")
+		namespace := os.Getenv("APP_NAME")
+		awsSecret := os.Getenv("AWS_SECRET_KEY")
+		awsKey := os.Getenv("AWS_ACCESS_KEY")
+
+		store, err = storage.ElasticSearch(host, scheme, index, namespace, awsKey, awsSecret)
+
 	default:
 		store = storage.Local()
 	}

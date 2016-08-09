@@ -2,6 +2,7 @@ package elasticsearch
 
 import (
 	"encoding/json"
+	"github.com/smartystreets/go-aws-auth"
 	"gopkg.in/olivere/elastic.v3"
 	"net/http"
 )
@@ -12,17 +13,32 @@ type ElasticSearch struct {
 	namespace string
 }
 
+type awsSigningTransport struct {
+	HTTPClient  *http.Client
+	Credentials awsauth.Credentials
+}
+
 // New creates a new instance of an ES client
 // We use http.Client as a param so that we can
 // be provider agnostic - eg. AWS ElasticSearch
-func New(host, scheme, index, namespace string, h http.Client) (ElasticSearch, error) {
+func New(host, scheme, index, namespace, awsKey, awsSecret string) (ElasticSearch, error) {
 	var e ElasticSearch
+
+	signingTransport := awsSigningTransport{
+		Credentials: awsauth.Credentials{
+			AccessKeyID:     awsKey,
+			SecretAccessKey: awsSecret,
+		},
+		HTTPClient: http.DefaultClient,
+	}
+
+	signingClient := http.Client{Transport: http.RoundTripper(signingTransport)}
 
 	client, err := elastic.NewClient(
 		elastic.SetURL(host),
 		elastic.SetMaxRetries(10),
 		elastic.SetScheme(scheme),
-		elastic.SetHttpClient(&h),
+		elastic.SetHttpClient(&signingClient),
 	)
 
 	if err != nil {
@@ -118,4 +134,9 @@ func (e ElasticSearch) Flush() {
 		AllowNoIndices(true).
 		IgnoreUnavailable(true).
 		Do()
+}
+
+// RoundTrip implementation
+func (a awsSigningTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	return a.HTTPClient.Do(awsauth.Sign4(req, a.Credentials))
 }

@@ -2,8 +2,6 @@
 package storage
 
 import (
-	"net/http"
-
 	"github.com/kyani-inc/storage/providers/bolt"
 	"github.com/kyani-inc/storage/providers/dynamodb"
 	"github.com/kyani-inc/storage/providers/elasticsearch"
@@ -68,6 +66,6 @@ func DynamoDB(access string, secret string, region string, table string) (Storag
 }
 
 // ElasticSearch storage
-func ElasticSearch(host, scheme string, h http.Client) (Storage, error) {
-	return elasticsearch.New(host, scheme, h)
+func ElasticSearch(host, scheme, index, namespace, awsKey, awsSecret string) (Storage, error) {
+	return elasticsearch.New(host, scheme, index, namespace, awsKey, awsSecret)
 }
