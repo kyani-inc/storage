@@ -41,7 +41,7 @@ func emptyVars() bool {
 
 func TestES(t *testing.T) {
 	if emptyVars() {
-		t.Error("Must have ENV set")
+		t.Skip("Must have ENV set")
 	}
 
 	es, err := elasticsearch.New(host, scheme, index, namespace, awsKey, awsSecret)
