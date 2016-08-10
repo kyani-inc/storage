@@ -18,9 +18,8 @@ type awsSigningTransport struct {
 	Credentials awsauth.Credentials
 }
 
-// New creates a new instance of an ES client
-// We use http.Client as a param so that we can
-// be provider agnostic - eg. AWS ElasticSearch
+// New creates a new instance of an ES client for interaction
+// with an AWS provied ES server
 func New(host, scheme, index, namespace, awsKey, awsSecret string) (ElasticSearch, error) {
 	var e ElasticSearch
 
