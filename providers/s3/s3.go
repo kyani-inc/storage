@@ -154,3 +154,17 @@ func (store S3) validate() error {
 
 	return errors.New(fmt.Sprintf("S3 errors %+v", errs))
 }
+
+func (store S3) List(prefix, delim, marker string, max int) (list *s3.ListResp) {
+	bucket, err := store.remoteBucket()
+
+	if err != nil {
+		return list
+	}
+
+	data, err := bucket.List(prefix, delim, marker, max)
+	if err != nil {
+		return list
+	}
+	return data
+}
