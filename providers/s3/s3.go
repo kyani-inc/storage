@@ -4,6 +4,7 @@ package s3
 import (
 	"errors"
 	"fmt"
+
 	"gopkg.in/amz.v3/aws"
 	"gopkg.in/amz.v3/s3"
 )
@@ -107,6 +108,11 @@ func (store S3) Flush() {
 }
 
 func (store S3) auth() aws.Auth {
+	// Inherit from default env if we have it
+	if auth, err := aws.EnvAuth(); err == nil {
+		return auth
+	}
+
 	return aws.Auth{
 		AccessKey: store.access,
 		SecretKey: store.secret,
@@ -127,14 +133,6 @@ func (store S3) remoteBucket() (*s3.Bucket, error) {
 
 func (store S3) validate() error {
 	errs := []string{}
-
-	if store.access == "" {
-		errs = append(errs, "access key missing")
-	}
-
-	if store.secret == "" {
-		errs = append(errs, "secret key missing")
-	}
 
 	if store.region == "" {
 		errs = append(errs, "region missing")
