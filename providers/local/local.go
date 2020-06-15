@@ -7,8 +7,8 @@ type Local struct {
 	mu    sync.RWMutex
 }
 
-func New() Local {
-	return Local{store: map[string][]byte{}}
+func New() *Local {
+	return &Local{store: map[string][]byte{}}
 }
 
 func (l *Local) Get(key string) []byte {
